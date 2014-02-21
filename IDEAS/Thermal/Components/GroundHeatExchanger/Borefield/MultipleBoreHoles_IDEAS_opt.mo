@@ -9,8 +9,7 @@ model MultipleBoreHoles_IDEAS_opt
   // Medium in borefield
   parameter IDEAS.Thermal.Data.Interfaces.Medium medium=IDEAS.Thermal.Data.Media.WaterBuildingsLib()  annotation (__Dymola_choicesAllMatching=true);
 
-  extends Borefield.BaseClasses.partial_MultipleBoreHoles(
-                                                     p_max=5, lenSim=3600*24*50);
+  extends BaseClasses.partial_MultipleBoreHoles(     p_max=5, lenSim=3600*24*50);
 
   Modelica.SIunits.Temperature T_hcf_out
     "Temperature of the medium of the sink";

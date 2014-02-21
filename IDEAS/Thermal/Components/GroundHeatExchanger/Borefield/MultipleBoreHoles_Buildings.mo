@@ -11,8 +11,7 @@ model MultipleBoreHoles_Buildings
   // Medium in borefield
   replaceable package Medium = Buildings.Media.ConstantPropertyLiquidWater;
 
-  extends Borefield.BaseClasses.partial_MultipleBoreHoles(
-                                                     p_max=5, lenSim=3600*24*50);
+  extends BaseClasses.partial_MultipleBoreHoles(     p_max=5, lenSim=3600*24*50);
 
   // Calculation of the inlet and outlet temperature, if show_T=true
   parameter Boolean show_T=true;

@@ -1,5 +1,6 @@
-within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield;
-model test_NickAndThomas
+within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Examples;
+model borefieldWithHP
+  extends Modelica.Icons.Example;
 
   parameter Integer lenSim=3600*24*365*20
     "Simulation length ([s]). By default = 100 days";
@@ -32,4 +33,4 @@ equation
             -100},{100,100}}), graphics),
     experiment(StopTime=6.3e+008, __Dymola_NumberOfIntervals=10000),
     __Dymola_experimentSetupOutput(events=false));
-end test_NickAndThomas;
+end borefieldWithHP;
