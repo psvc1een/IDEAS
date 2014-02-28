@@ -6,8 +6,8 @@ model EmbeddedPipe
 
   // General model parameters ////////////////////////////////////////////////////////////////
   // in partial: parameter SI.MassFlowRate m_flowMin "Minimal flowrate when in operation";
-  final parameter Modelica.SIunits.Length L_r=FHChars.A_Floor/FHChars.T
-    "Length of the circuit";
+  final parameter Modelica.SIunits.Length L_r=FHChars.A_Floor/FHChars.T/FHChars.nParCir
+    "Length of each of the parallel circuits";
 
   // Resistances ////////////////////////////////////////////////////////////////
   // there is no R_z in the model because I explicitly simulate the dynamics of the water
@@ -29,15 +29,15 @@ model EmbeddedPipe
 
   // Auxiliary parameters and variables ////////////////////////////////////////////////////////////////
   final parameter Modelica.SIunits.Mass mMedium=Modelica.Constants.pi/4*(
-      FHChars.d_a - 2*FHChars.s_r)^2*L_r*medium.rho
+      FHChars.d_a - 2*FHChars.s_r)^2*(L_r*FHChars.nParCir)*medium.rho
     "Mass of the water in the tube";
 
-  final parameter Real rey=m_flowMin*(FHChars.d_a - 2*FHChars.s_r)/(medium.nue*
-      Modelica.Constants.pi/4*(FHChars.d_a - 2*FHChars.s_r)^2)
+  final parameter Real rey=m_flowMin/FHChars.nParCir/medium.rho * (FHChars.d_a - 2*FHChars.s_r) /
+  (medium.nue * Modelica.Constants.pi / 4 * (FHChars.d_a - 2*FHChars.s_r)^2)
     "Fix Reynolds number for assert of turbulent flow";
   Real m_flowSp=flowPort_a.m_flow/FHChars.A_Floor "in kg/s.m2";
   Real m_flowMinSp=m_flowMin/FHChars.A_Floor "in kg/s.m2";
-  Modelica.SIunits.Velocity flowSpeed=flowPort_a.m_flow/medium.rho/(Modelica.Constants.pi
+  Modelica.SIunits.Velocity flowSpeed=flowPort_a.m_flow/FHChars.nParCir/medium.rho/(Modelica.Constants.pi
       /4*(FHChars.d_a - 2*FHChars.s_r)^2);
 
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor resistance_x(G=

@@ -10,6 +10,8 @@ block SimTimes
   parameter Boolean DST=false "take into account daylight saving time";
   parameter Integer yr=2010 "depcited year for DST only";
   parameter Boolean ifSolCor=true;
+  parameter Integer startingDay( min=1,max=7) = 1
+    "First day of the simulation: 1 = Monday, 2 = Tuesday, etc.";
 
   Modelica.Blocks.Interfaces.RealOutput timSol "solar time"
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
@@ -22,6 +24,9 @@ block SimTimes
     annotation (Placement(transformation(extent={{90,30},{110,50}})));
   Modelica.Blocks.Interfaces.BooleanOutput summer
     annotation (Placement(transformation(extent={{90,70},{110,90}})));
+  Modelica.Blocks.Interfaces.RealOutput[4] timDat
+    "Day of the week/day of the year/hour of the day/hour of the year"
+    annotation (Placement(transformation(extent={{90,-20},{110,0}})));
 
 protected
   IDEAS.Climate.Time.BaseClasses.LocalTime localTime(lon=lon)
@@ -38,7 +43,8 @@ protected
     timZonSta=timZonSta,
     DST=DST,
     yr=yr) annotation (Placement(transformation(extent={{-50,-6},{-30,14}})));
-
+  IDEAS.Climate.Time.BaseClasses.SimulationStartingDay simulationStartingDay(startingDay=startingDay)
+    annotation (Placement(transformation(extent={{-90,-86},{-70,-66}})));
 equation
   connect(localTime.timLoc, solarTime.timLoc) annotation (Line(
       points={{10,4},{30,4}},
@@ -88,6 +94,17 @@ equation
       points={{-40,14},{-40,80},{100,80}},
       color={255,0,255},
       smooth=Smooth.None));
+  connect(simulationStartingDay.timSim, calendarTime.startingDay) annotation (
+      Line(
+      points={{-70,-76},{-6,-76},{-6,-50},{12,-50},{12,-51.2},{30,-51.2}},
+      color={0,0,127},
+      smooth=Smooth.None));
+  for j in 1:4 loop
+    connect(calendarTime.timDat[j], timDat[j]) annotation (Line(
+      points={{50,-37.6},{70,-37.6},{70,-10},{100,-10}},
+      color={0,0,127},
+      smooth=Smooth.None));
+  end for;
   annotation (
     defaultComponentName="timMan",
     Documentation(info="<html>

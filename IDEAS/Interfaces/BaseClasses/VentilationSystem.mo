@@ -22,6 +22,15 @@ partial model VentilationSystem
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a[nZones] heatPortCon
     "Nodes for convective heat gains"
     annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortVent
+    "Heat exchange in AHU"              annotation (Placement(transformation(extent={{-10,
+            -110},{10,-90}})));
+  Modelica.Blocks.Interfaces.RealOutput airClimOnOff
+    "boolean signal identifying need of AHU for heaing/cooling from primary system"
+      annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=-90,
+          origin={78,-104})));
   Modelica.Electrical.QuasiStationary.MultiPhase.Interfaces.PositivePlug
     plugLoad(each m=1) "Electricity connection to the Inhome feeder"
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
@@ -59,5 +68,7 @@ equation
         Line(
           points={{100,100},{100,-100}},
           color={85,170,255},
-          smooth=Smooth.None)}), Diagram(graphics));
+          smooth=Smooth.None)}), Diagram(coordinateSystem(preserveAspectRatio=false,
+          extent={{-100,-100},{100,100}}),
+                                         graphics));
 end VentilationSystem;

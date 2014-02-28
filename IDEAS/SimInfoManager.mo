@@ -78,7 +78,10 @@ public
   Modelica.SIunits.Time timLoc=timMan.timLoc "Local time";
   Modelica.SIunits.Time timSol=timMan.timSol "Solar time";
   Modelica.SIunits.Time timCal=timMan.timCal "Calendar time";
-
+  Real dayWeek= timMan.timDat[1];
+  Real dayYear= timMan.timDat[2];
+  Real hourDay= timMan.timDat[3];
+  Real hourYear= timMan.timDat[4];
 protected
   IDEAS.Climate.Time.SimTimes timMan(
     delay=detail.timestep/2,

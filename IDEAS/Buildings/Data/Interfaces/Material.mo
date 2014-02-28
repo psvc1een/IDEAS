@@ -19,7 +19,7 @@ record Material "Properties of building materials"
 
   final parameter Modelica.SIunits.ThermalDiffusivity alpha=k/(c*rho)
     "Thermal diffusivity";
-  final parameter Integer nStaRef=3
+  final parameter Integer nStaRef=6
     "Number of states of a reference case, ie. 20 cm dense concrete";
   final parameter Real piRef=224
     "d/sqrt(mat.alpha) of a reference case, ie. 20 cm dense concrete";

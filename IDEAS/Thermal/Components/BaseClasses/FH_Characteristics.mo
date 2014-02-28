@@ -31,6 +31,15 @@ record FH_Characteristics
     "Thermal capacity of the concrete/screed material";
   parameter Modelica.SIunits.Density rho_b=2100
     "Density of the concrete/screed layer";
+  parameter Integer nParCir=1 "Number of parallel circuits";
+  parameter Modelica.SIunits.ThermalConductivity lambda_ins=0.03
+    "Thermal conductivity of the insulation layer underneath the floor heating";
+  parameter Modelica.SIunits.Length S_ins = 0.1
+    "Thickness of the insulation layer underneath the floor heating";
+  parameter Modelica.SIunits.Length e = 0.000005
+    "roughness of pipe material (default 5 micron for PE)";
+  // final parameter Modelica.SIunits.Length d_i = d_a -2*s_r
+  //   "Internal diameter of the pipe";
   constant Integer n1=3 "Number of discrete capacities in upper layer";
   constant Integer n2=3 "Number of discrete capacities in lower layer";
 

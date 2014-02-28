@@ -17,7 +17,10 @@ protected
 public
   Modelica.Blocks.Sources.Constant flow_pump(k=1)
         annotation (Placement(transformation(extent={{-98,60},{-78,80}})));
-  Modelica.Blocks.Sources.Constant ctrl(k=0.4)
+  Modelica.Blocks.Sources.Sine     ctrl(
+    amplitude=0.5,
+    freqHz=0.01,
+    offset=0.5)
         annotation (Placement(transformation(extent={{-32,58},{-12,78}})));
   IDEAS.Thermal.Components.BaseClasses.Ambient                    ambient1(
     medium=medium,
@@ -34,7 +37,7 @@ public
     constantAmbientPressure=100000,
     constantAmbientTemperature=283.15)
     annotation (Placement(transformation(extent={{-76,-76},{-56,-56}})));
-  DaPModels.Hydraulic.ThreeWayValveMotor threeWayValveMotor
+  IDEAS.Thermal.Components.BaseClasses.ThreeWayValveMotor threeWayValveMotor
     annotation (Placement(transformation(extent={{10,-10},{-10,10}})));
 equation
   connect(flow_pump.y, pumpFlow1.m_flowSet)

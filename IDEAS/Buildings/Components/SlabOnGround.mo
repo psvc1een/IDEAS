@@ -20,7 +20,7 @@ model SlabOnGround "opaque floor on ground slab"
     "Thermal insulation thickness"
     annotation (Dialog(group="Construction details"));
   parameter Modelica.SIunits.Area AWall "Total wall area";
-  parameter Modelica.SIunits.Area PWall "Total wall perimeter";
+  parameter Modelica.SIunits.Length PWall "Total wall perimeter";
   parameter Modelica.SIunits.Angle inc
     "Inclination of the wall, i.e. 90deg denotes vertical";
   parameter Modelica.SIunits.Angle azi
