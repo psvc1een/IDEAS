@@ -11,7 +11,7 @@ function ShortTimeResponseHX
 
   input String name=
       "example";
-  input String modelToSimulate=
+  final parameter String modelToSimulate=
       "IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.BaseClasses.BoreHoles.Examples.SingleBoreHoleSerStepLoad"
     "model to simulate";
 
@@ -25,7 +25,7 @@ function ShortTimeResponseHX
   input Data.Records.StepResponse steRes=
       Data.StepResponse.example() "generic step load parameter";
 
-  input String savePath=
+  final parameter String savePath=
       "..\\IDEAS\\IDEAS\\Thermal\\Components\\GroundHeatExchanger\\Borefield\\Data\\ShortTermResponse\\";
 
   output Real[3,steRes.tBre_d + 1] readData;
