@@ -35,7 +35,7 @@ partial model HeatingSystem "Partial heating system"
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a[nZones] heatPortRad if
     radiators "Nodes for radiative heat gains"
     annotation (Placement(transformation(extent={{-210,-30},{-190,-10}})));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b[nZones] heatPortEmb if
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b[nEmb] heatPortEmb if
     floorHeating "Construction nodes for heat gains by embedded layers"
     annotation (Placement(transformation(extent={{-210,50},{-190,70}})));
   Modelica.Electrical.QuasiStationary.MultiPhase.Interfaces.PositivePlug

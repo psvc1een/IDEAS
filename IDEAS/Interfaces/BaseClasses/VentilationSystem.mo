@@ -11,6 +11,8 @@ partial model VentilationSystem
     "Number of conditioned thermal building zones";
   parameter Integer nLoads(min=1) = 1 "Number of electric system loads";
   parameter Real[nZones] VZones "Conditioned volumes of the zones";
+  parameter Boolean use_heatPortVent = false;
+  parameter Boolean use_airClimOnOff = false;
 
   // Interfaces  ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -22,10 +24,10 @@ partial model VentilationSystem
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a[nZones] heatPortCon
     "Nodes for convective heat gains"
     annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortVent
-    "Heat exchange in AHU"              annotation (Placement(transformation(extent={{-10,
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortVent if use_heatPortVent "Heat exchange in AHU"
+                                        annotation (Placement(transformation(extent={{-10,
             -110},{10,-90}})));
-  Modelica.Blocks.Interfaces.RealOutput airClimOnOff
+  Modelica.Blocks.Interfaces.RealOutput airClimOnOff if use_airClimOnOff
     "boolean signal identifying need of AHU for heaing/cooling from primary system"
       annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
