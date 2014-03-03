@@ -7,7 +7,8 @@ partial model Partial_Emission
 
   parameter Boolean floorHeating "true if the emission has a floor heating";
   parameter Boolean radiators "true if the emission has a radiator";
-
+    parameter Boolean pressureLoss = false
+    "Calculation of hydraulic pressure losses?";
   // Interfaces ////////////////////////////////////////////////////////////////////////////////////////
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortCon if radiators
     "convective heat transfer from radiators" annotation (Placement(
