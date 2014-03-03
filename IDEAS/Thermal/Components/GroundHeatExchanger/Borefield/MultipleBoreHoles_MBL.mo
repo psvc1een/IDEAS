@@ -1,6 +1,6 @@
 within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield;
-model MultipleBoreHoles_Buildings
-  "Calculates the average fluid temperature T_fts of the borefield for a given (time dependent) load Q_flow"
+model MultipleBoreHoles_MBL
+  "Calculates the average fluid temperature T_fts of the borefield for a given (time dependent) load Q_flow. Compatible with the Modelica Buildings Library"
   import Buildings;
 
   // FIXME:
@@ -148,4 +148,4 @@ equation
           textString="%name")}),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-140,-140},{
             140,140}}), graphics));
-end MultipleBoreHoles_Buildings;
+end MultipleBoreHoles_MBL;

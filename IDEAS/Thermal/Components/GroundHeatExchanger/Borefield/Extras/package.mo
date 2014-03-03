@@ -1,5 +1,4 @@
 within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield;
-package Data 
+package Extras 
 extends Modelica.Icons.Package;
-
-end Data;
+end Extras;

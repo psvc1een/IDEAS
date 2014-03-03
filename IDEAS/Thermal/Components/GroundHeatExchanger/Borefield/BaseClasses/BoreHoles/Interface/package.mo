@@ -2,6 +2,4 @@ within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.BaseClasses.BoreHo
 package Interface 
 extends Modelica.Icons.InterfacesPackage;
 
-
-
 end Interface;

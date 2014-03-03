@@ -1,6 +1,6 @@
 within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield;
-model MultipleBoreHoles_IDEAS
-  "Calculates the average fluid temperature T_fts of the borefield for a given (time dependent) load Q_flow"
+model MultipleBoreHoles_IDEAS "Calculates the average fluid temperature T_fts of the borefield for a given (time dependent) load Q_flow.
+  Compatible with the IDEAS library"
 
   // FIXME:
   //  1) make it possible to run model without pre-compilation of g-function (short term)

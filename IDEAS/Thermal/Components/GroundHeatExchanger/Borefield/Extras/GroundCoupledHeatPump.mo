@@ -1,9 +1,14 @@
-within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield;
-model GroundCoupledHeatPump "Ground coupled heat pump for calculation of COP"
+within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Extras;
+model GroundCoupledHeatPump "Heat pump connected to ta borefield"
 
   parameter Integer lenSim "Simulation length ([s]). By default = 100 days";
 
-  MultipleBoreHoles_IDEAS_opt multipleBoreHoles_IDEAS_opt(bfData = bfData, lenSim=lenSim)
+  replaceable parameter Data.Records.BorefieldData bfData
+    constrainedby Data.Records.BorefieldData
+    annotation (Placement(transformation(extent={{-86,-44},{-66,-24}})));
+
+  Extras.MultipleBoreHoles_signals multipleBoreHoles_IDEAS_opt(bfData=bfData,
+      lenSim=lenSim)
     annotation (Placement(transformation(extent={{4,-66},{64,-6}})));
   Modelica.Blocks.Interfaces.RealInput QEva(unit="W") "load to the borefield"
     annotation (Placement(transformation(
@@ -31,15 +36,12 @@ model GroundCoupledHeatPump "Ground coupled heat pump for calculation of COP"
         extent={{-20,-20},{20,20}},
         rotation=-90,
         origin={60,106})));
-  Modelica.Blocks.Sources.RealExpression realExpression(y=QCond)
+  Modelica.Blocks.Sources.RealExpression QCon(y=QCond)
+    "Condensor load to the borefield"
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
 
   Modelica.SIunits.HeatFlowRate QCond "Condensor power";
   Modelica.SIunits.Power PEl "Electrical power";
-
-  replaceable parameter Data.Records.BorefieldData bfData
-    constrainedby Data.Records.BorefieldData
-    annotation (Placement(transformation(extent={{-86,-44},{-66,-24}})));
 
 equation
   COP = 3;
@@ -58,8 +60,7 @@ equation
       points={{13,-36},{0,-36},{0,-110}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(realExpression.y, multipleBoreHoles_IDEAS_opt.Q_flow) annotation (
-      Line(
+  connect(QCon.y, multipleBoreHoles_IDEAS_opt.Q_flow) annotation (Line(
       points={{11,0},{34,0},{34,-17.5714}},
       color={0,0,127},
       smooth=Smooth.None));

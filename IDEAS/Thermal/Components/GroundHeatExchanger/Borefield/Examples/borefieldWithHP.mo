@@ -5,8 +5,8 @@ model borefieldWithHP
   parameter Integer lenSim=3600*24*365*20
     "Simulation length ([s]). By default = 100 days";
 
-  GroundCoupledHeatPump groundCoupledHeatPump(lenSim=lenSim, redeclare
-      Borefield.Data.BorefieldData.example                                                   bfData)
+  Extras.GroundCoupledHeatPump groundCoupledHeatPump(lenSim=lenSim, redeclare
+      Borefield.Data.BorefieldData.example bfData)
     annotation (Placement(transformation(extent={{-26,-44},{26,4}})));
   Modelica.Blocks.Sources.Sine QEva(
     amplitude=10000,
