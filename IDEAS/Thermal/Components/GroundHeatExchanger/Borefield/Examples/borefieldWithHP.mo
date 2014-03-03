@@ -6,7 +6,7 @@ model borefieldWithHP
     "Simulation length ([s]). By default = 100 days";
 
   GroundCoupledHeatPump groundCoupledHeatPump(lenSim=lenSim, redeclare
-      Borefield.Data.BorefieldStepResponse.test_NickAndThomas_accurate                                                   bfSteRes)
+      Borefield.Data.BorefieldData.example                                                   bfData)
     annotation (Placement(transformation(extent={{-26,-44},{26,4}})));
   Modelica.Blocks.Sources.Sine QEva(
     amplitude=10000,

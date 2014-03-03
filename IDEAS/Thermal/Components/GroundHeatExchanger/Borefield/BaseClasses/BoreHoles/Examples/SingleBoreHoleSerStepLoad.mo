@@ -6,33 +6,31 @@ model SingleBoreHoleSerStepLoad "SingleBoreHoleSer with step input load "
 
   package Medium = Buildings.Media.ConstantPropertyLiquidWater;
 
-  redeclare replaceable parameter Data.Records.GenericStepParam genStePar=
-      Data.GenericStepParam.example_accurate() "generic step load parameter"
+  redeclare replaceable parameter Data.Records.StepResponse steRes=
+      Data.StepResponse.example_accurate() "generic step load parameter"
     annotation (Placement(transformation(extent={{-18,-76},{-8,-66}})));
   redeclare replaceable parameter Data.Records.Advanced adv=
       Data.Advanced.example() "Advanced parameters"
     annotation (Placement(transformation(extent={{-2,-76},{8,-66}})));
-  redeclare replaceable parameter Data.Records.SoilData matSoi=
+  redeclare replaceable parameter Data.Records.Soil soi=
       Data.SoilData.example()
     annotation (Placement(transformation(extent={{14,-76},{24,-66}})));
-  redeclare replaceable parameter Data.Records.BoreholeFillingData matFil=
-      Data.BoreholeFillingData.example()
-    "Thermal properties of the filling material"
+  redeclare replaceable parameter Data.Records.Filling fill=
+      Data.FillingData.example() "Thermal properties of the filling material"
     annotation (Placement(transformation(extent={{30,-76},{40,-66}})));
-  redeclare replaceable parameter Data.Records.BorefieldGeometryData bfGeo=
-      Data.BorefieldGeometricData.example()
-    "Geometric charachteristic of the borehole"
+  redeclare replaceable parameter Data.Records.Geometry geo=
+      Data.GeometricData.example() "Geometric charachteristic of the borehole"
     annotation (Placement(transformation(extent={{46,-76},{56,-66}})));
 
   SingleBoreHolesInSerie borHolSer(
     redeclare each package Medium = Medium,
-    matSoi=matSoi,
-    matFil=matFil,
-    bfGeo=bfGeo,
+    soi=soi,
+    fill=fill,
+    geo=geo,
     adv=adv,
     dp_nominal=10000,
-    m_flow_nominal=genStePar.m_flow,
-    T_start=genStePar.T_ini) "Borehole heat exchanger" annotation (Placement(
+    m_flow_nominal=steRes.m_flow,
+    T_start=steRes.T_ini) "Borehole heat exchanger" annotation (Placement(
         transformation(extent={{-12,-50},{12,-26}}, rotation=0)));
 
   Buildings.Fluid.Sources.Boundary_ph sin(redeclare package Medium = Medium,
@@ -44,22 +42,22 @@ model SingleBoreHoleSerStepLoad "SingleBoreHoleSer with step input load "
 
   Buildings.Fluid.HeatExchangers.HeaterCoolerPrescribed hea(
     redeclare package Medium = Medium,
-    m_flow_nominal=genStePar.m_flow,
+    m_flow_nominal=steRes.m_flow,
     dp_nominal=10000,
     show_T=true,
     energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
-    m_flow(start=genStePar.m_flow),
-    T_start=genStePar.T_ini,
-    Q_flow_nominal=genStePar.q_ste*bfGeo.hBor*bfGeo.nbSer,
+    m_flow(start=steRes.m_flow),
+    T_start=steRes.T_ini,
+    Q_flow_nominal=steRes.q_ste*geo.hBor*geo.nbSer,
     p_start=100000)
     annotation (Placement(transformation(extent={{26,10},{6,-10}})));
-  Modelica.Blocks.Sources.Constant mFlo(k=genStePar.m_flow)
+  Modelica.Blocks.Sources.Constant mFlo(k=steRes.m_flow)
     annotation (Placement(transformation(extent={{-54,-24},{-42,-12}})));
   Buildings.Fluid.Movers.FlowMachine_m_flow pum(
     redeclare package Medium = Medium,
-    m_flow_nominal=genStePar.m_flow,
-    m_flow(start=genStePar.m_flow),
-    T_start=genStePar.T_ini)
+    m_flow_nominal=steRes.m_flow,
+    m_flow(start=steRes.m_flow),
+    T_start=steRes.T_ini)
     annotation (Placement(transformation(extent={{-12,10},{-32,-10}})));
 
 equation

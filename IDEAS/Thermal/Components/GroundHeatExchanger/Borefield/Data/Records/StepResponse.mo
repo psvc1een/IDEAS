@@ -1,20 +1,19 @@
 within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.Records;
-record GenericStepParam
+record StepResponse
+  "Parameter for the calculation of the step response of the borefield"
   extends Modelica.Icons.Record;
   import SI = Modelica.SIunits;
 
-  parameter String name="GenericStepParam";
+  parameter String name="StepResponse";
 
-  parameter SI.Time tStep=3600 "[s] discrete time step";
+  parameter SI.Time tStep=3600 "[s] time resolution of the step-response";
   parameter Integer t_min_d=1 "[-] Mininum simulation discrete time";
-  parameter Integer tSteSta_d=integer(3600*24*365*30/tStep)
+  final parameter Integer tSteSta_d=integer(3600*24*365*30/tStep)
     "[-] discrete time to reach steady state (default = 30 years)";
   parameter Integer tBre_d=100
-    "[-] discrete time upper boundary for saving results";
+    "[-] discrete time upper boundary for saving results (tBre_d * tStep) should be > 100 hours";
   parameter Real q_ste(unit="W/m") = 30
-    "Amplitude per length borehole of step load input";
+    "Power per length borehole of step load input";
   parameter SI.MassFlowRate m_flow=0.3 "Flow through the pipe";
   parameter SI.Temperature T_ini=273.15 "Initial temperature";
-
-  //  replaceable package Medium = Buildings.Media.ConstantPropertyLiquidWater;
-end GenericStepParam;
+end StepResponse;

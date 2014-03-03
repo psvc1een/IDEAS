@@ -2,15 +2,15 @@ within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Examples;
 model example
   extends Modelica.Icons.Example;
 
-  parameter Data.BorefieldStepResponse.example
-    bfSteRes
+  parameter Data.BorefieldData.example
+    bfData
     annotation (Placement(transformation(extent={{-70,52},{-50,72}})));
   parameter Integer lenSim=3600*24*20;
 
-  MultipleBoreHoles_Buildings multipleBoreholes(lenSim=lenSim, bfSteRes=
-        bfSteRes)
+  MultipleBoreHoles_Buildings multipleBoreholes(lenSim=lenSim, bfData=
+        bfData)
     annotation (Placement(transformation(extent={{-34,-68},{36,2}})));
-  Modelica.Blocks.Sources.RealExpression realExpression(y=30*bfSteRes.bfGeo.hBor)
+  Modelica.Blocks.Sources.RealExpression realExpression(y=30*bfData.geo.hBor)
     annotation (Placement(transformation(extent={{-88,-22},{-68,-2}})));
   Modelica.Blocks.Interfaces.RealOutput T_fts
     annotation (Placement(transformation(extent={{92,-10},{112,10}})));

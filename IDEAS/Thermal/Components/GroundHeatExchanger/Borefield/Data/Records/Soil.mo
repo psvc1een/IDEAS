@@ -1,8 +1,8 @@
 within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.Records;
-record SoilData
+record Soil "Thermal properties of the ground"
   import Buildings;
 
   extends Buildings.HeatTransfer.Data.Soil.Generic;
-  parameter String name="SoilData";
+  parameter String name="Soil";
   final parameter Modelica.SIunits.DiffusionCoefficient alp=k/d/c;
-end SoilData;
+end Soil;

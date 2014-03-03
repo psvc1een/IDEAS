@@ -3,10 +3,10 @@ function transientFrac "Calculates the transient resistance for each cell"
   extends Interface.partialAggFunction;
   import SI = Modelica.SIunits;
 
-  input Data.Records.GenericStepParam genStePar;
-  input Data.Records.BorefieldGeometryData bfGeo;
-  input Data.Records.SoilData soi;
-  input Data.Records.ResponseWetter resWet;
+  input Data.Records.StepResponse steRes;
+  input Data.Records.Geometry geo;
+  input Data.Records.Soil soi;
+  input Data.Records.ShortTermResponse shoTerRes;
 
   input Integer[q_max,p_max] nuMat "number of pulse at the end of each cells";
 
@@ -14,12 +14,6 @@ function transientFrac "Calculates the transient resistance for each cell"
 
   output Real[q_max,p_max] kappaMat "transient resistance for each cell";
 
-//   parameter SI.Temperature TSteSta = Borefield.GroundHX.T_rt(
-//     r=bfGeo.rBor,
-//     genStePar=genStePar,
-//     bfGeo=bfGeo,
-//     soi=soi,
-//     t_d=genStePar.TSteSta_d);
 protected
   Integer q_pre;
   Integer p_pre;
@@ -30,16 +24,11 @@ algorithm
       if q == 1 and p == 1 then
         kappaMat[q, p] := (GroundHX.HeatCarrierFluidStepTemperature(
           t_d=nuMat[q, p],
-          genStePar=genStePar,
-          bfGeo=bfGeo,
+          steRes=steRes,
+          geo=geo,
           soi=soi,
-          resWet=resWet) - genStePar.T_ini)/TSteSta;
-//           Borefield.GroundHX.T_ft_cor(
-//           t_d=0,
-//           genStePar=genStePar,
-//           bfGeo=bfGeo,
-//           soi=soi,
-//           resWet=resWet)) / TSteSta;
+          shoTerRes=shoTerRes) - steRes.T_ini)/TSteSta;
+
       else
         (q_pre,p_pre) := BaseClasses.previousCellIndex(
           q_max,
@@ -49,15 +38,15 @@ algorithm
 
         kappaMat[q, p] := (GroundHX.HeatCarrierFluidStepTemperature(
           t_d=nuMat[q, p],
-          genStePar=genStePar,
-          bfGeo=bfGeo,
+          steRes=steRes,
+          geo=geo,
           soi=soi,
-          resWet=resWet) - GroundHX.HeatCarrierFluidStepTemperature(
+          shoTerRes=shoTerRes) - GroundHX.HeatCarrierFluidStepTemperature(
           t_d=nuMat[q_pre, p_pre],
-          genStePar=genStePar,
-          bfGeo=bfGeo,
+          steRes=steRes,
+          geo=geo,
           soi=soi,
-          resWet=resWet))/TSteSta;
+          shoTerRes=shoTerRes))/TSteSta;
       end if;
     end for;
   end for;

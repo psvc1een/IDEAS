@@ -3,24 +3,24 @@ model SingleBoreHolesInSerie
   "Single U-tube borehole heat exchanger model. If more than one borehole is given, they are assumed to be connected in series"
   extends Interface.PartialSingleBoreHole;
 
-  BaseClasses.SingleBoreHole[bfGeo.nbSer] borHol(
+  BaseClasses.SingleBoreHole[geo.nbSer] borHol(
     redeclare each final package Medium = Medium,
-    each final matSoi=matSoi,
-    each final matFil=matFil,
-    each final bfGeo=bfGeo,
+    each final soi=soi,
+    each final fill=fill,
+    each final geo=geo,
     each final adv=adv,
-    each final genStePar=genStePar,
+    each final steRes=steRes,
     each final dp_nominal=10000,
-    each final m_flow_nominal=genStePar.m_flow,
-    each final T_start=genStePar.T_ini) "Borehole heat exchanger" annotation (
+    each final m_flow_nominal=steRes.m_flow,
+    each final T_start=steRes.T_ini) "Borehole heat exchanger" annotation (
       Placement(transformation(extent={{-16,-16},{16,16}}, rotation=0)));
 
 equation
-  T_wall_ave = sum(borHol[:].T_wall_ave)/bfGeo.nbSer;
+  T_wall_ave = sum(borHol[:].T_wall_ave)/geo.nbSer;
 
   connect(port_a, borHol[1].port_a);
-  connect(borHol[bfGeo.nbSer].port_b, port_b);
-  for i in 1:bfGeo.nbSer - 1 loop
+  connect(borHol[geo.nbSer].port_b, port_b);
+  for i in 1:geo.nbSer - 1 loop
     connect(borHol[i].port_b, borHol[i + 1].port_a);
   end for;
 

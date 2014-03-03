@@ -39,11 +39,11 @@ model BoreHoleSegmentFourPort "Vertical segment of a borehole"
     final deltaM2=deltaM,
     final m1_flow_small=adv.m_flow_small,
     final m2_flow_small=adv.m_flow_small,
-    final matSoi=matSoi,
-    final matFil=matFil,
-    final bfGeo=bfGeo,
+    final soi=soi,
+    final fill=fill,
+    final geo=geo,
     final adv=adv,
-    final genStePar=genStePar,
+    final steRes=steRes,
     final allowFlowReversal1=adv.allowFlowReversal,
     final allowFlowReversal2=adv.allowFlowReversal,
     final homotopyInitialization=adv.homotopyInitialization,
@@ -61,15 +61,16 @@ model BoreHoleSegmentFourPort "Vertical segment of a borehole"
     C2_nominal=C_nominal) constrainedby Interface.PartialBoreHoleInternalHEX
     "Internal part of the borehole including the pipes and the filling material"
     annotation (Placement(transformation(extent={{-70,-10},{-50,10}})));
-  CylindricalGroundLayer soi(
-    final material=matSoi,
+
+    CylindricalGroundLayer soilLay(
+    final material=soi,
     final h=adv.hSeg,
     final nSta=adv.nHor,
-    final r_a=bfGeo.rBor,
+    final r_a=geo.rBor,
     final r_b=adv.rExt,
     final TInt_start=TFil_start,
     final TExt_start=TExt_start,
-    final steadyStateInitial=false) "Heat conduction in the soil"
+    final steadyStateInitial=false) "Heat conduction in the soil layers"
     annotation (Placement(transformation(extent={{0,-10},{20,10}})));
 
   Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature TBouCon(final T=
@@ -96,7 +97,7 @@ equation
           -30,0}},
       color={191,0,0},
       smooth=Smooth.None));
-  connect(heaFlo.port_b, soi.port_a) annotation (Line(
+  connect(heaFlo.port_b, soilLay.port_a) annotation (Line(
       points={{-10,0},{-7.5,0},{-7.5,1.22125e-015},{-5,1.22125e-015},{-5,0},{0,
           0}},
       color={191,0,0},
@@ -105,7 +106,7 @@ equation
       points={{-100,60},{-80,60},{-80,6.36364},{-70,6.36364}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(soi.port_b, TBouCon.port) annotation (Line(
+  connect(soilLay.port_b, TBouCon.port) annotation (Line(
       points={{20,0},{48,0}},
       color={191,0,0},
       smooth=Smooth.None));

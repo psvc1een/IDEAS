@@ -3,17 +3,15 @@ model BoreholeSegment "Test for the boreholeSegment model"
   import Buildings;
   import DaPModels;
   extends Modelica.Icons.Example;
-  inner Modelica.Fluid.System system
-    annotation (Placement(transformation(extent={{-80,-80},{-60,-60}})));
   package Medium = Buildings.Media.ConstantPropertyLiquidWater;
 
   BoreHoleSegmentFourPort seg(
     redeclare package Medium = Medium,
     dp_nominal=5,
-    matSoi=Data.SoilData.Sandstone(),
-    matFil=Data.BoreholeFillingData.Sandstone(),
-    bfGeo=Data.BorefieldGeometricData.Line1_rB010_h100(),
-    adv=Data.Advanced.Default(),
+    soi=Data.SoilData.example(),
+    fill=Data.FillingData.example(),
+    geo=Data.GeometricData.example(),
+    adv=Data.Advanced.example(),
     TExt_start=273.15,
     TFil_start=273.15) annotation (Placement(transformation(
         extent={{-13,-13},{13,13}},

@@ -6,10 +6,10 @@ model SingleBoreHole "Single U-tube borehole heat exchanger"
 
   BaseClasses.BoreHoleSegmentFourPort borHolSeg[adv.nVer](
     redeclare each final package Medium = Medium,
-    each final matSoi=matSoi,
-    each final matFil=matFil,
-    each final bfGeo=bfGeo,
-    each final genStePar=genStePar,
+    each final soi=soi,
+    each final fill=fill,
+    each final geo=geo,
+    each final steRes=steRes,
     each final adv=adv,
     final dp_nominal={if i == 1 then dp_nominal else 0 for i in 1:adv.nVer},
     TExt_start=adv.TExt_start,
@@ -23,7 +23,7 @@ model SingleBoreHole "Single U-tube borehole heat exchanger"
     each final energyDynamics=energyDynamics,
     each final massDynamics=massDynamics,
     each final p_start=p_start,
-    each T_start=genStePar.T_ini,
+    each T_start=steRes.T_ini,
     each X_start=X_start,
     each C_start=C_start,
     each C_nominal=C_nominal) "Discretized borehole segments"

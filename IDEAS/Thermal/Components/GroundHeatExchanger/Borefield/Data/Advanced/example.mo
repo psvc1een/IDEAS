@@ -9,6 +9,5 @@ record example
     dT_dz=0,
     rExt=3,
     TExt0_start=283.15,
-    samplePeriod=820000,
     name="example");
 end example;

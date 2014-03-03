@@ -3,7 +3,7 @@ model GroundCoupledHeatPump "Ground coupled heat pump for calculation of COP"
 
   parameter Integer lenSim "Simulation length ([s]). By default = 100 days";
 
-  MultipleBoreHoles_IDEAS_opt multipleBoreHoles_IDEAS_opt(bfSteRes = bfSteRes, lenSim=lenSim)
+  MultipleBoreHoles_IDEAS_opt multipleBoreHoles_IDEAS_opt(bfData = bfData, lenSim=lenSim)
     annotation (Placement(transformation(extent={{4,-66},{64,-6}})));
   Modelica.Blocks.Interfaces.RealInput QEva(unit="W") "load to the borefield"
     annotation (Placement(transformation(
@@ -37,8 +37,8 @@ model GroundCoupledHeatPump "Ground coupled heat pump for calculation of COP"
   Modelica.SIunits.HeatFlowRate QCond "Condensor power";
   Modelica.SIunits.Power PEl "Electrical power";
 
-  replaceable parameter Data.Records.BorefieldStepResponse bfSteRes
-    constrainedby Data.Records.BorefieldStepResponse
+  replaceable parameter Data.Records.BorefieldData bfData
+    constrainedby Data.Records.BorefieldData
     annotation (Placement(transformation(extent={{-86,-44},{-66,-24}})));
 
 equation

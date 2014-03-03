@@ -9,9 +9,9 @@ model SingleUTubeInternalHEX
     redeclare final package Medium2 = Medium,
     T1_start=TFil_start,
     T2_start=TFil_start,
-    final tau1=Modelica.Constants.pi*bfGeo.rTub^2*adv.hSeg*rho1_nominal/
+    final tau1=Modelica.Constants.pi*geo.rTub^2*adv.hSeg*rho1_nominal/
         m1_flow_nominal,
-    final tau2=Modelica.Constants.pi*bfGeo.rTub^2*adv.hSeg*rho2_nominal/
+    final tau2=Modelica.Constants.pi*geo.rTub^2*adv.hSeg*rho2_nominal/
         m2_flow_nominal,
     final show_T=true,
     vol1(
@@ -73,15 +73,15 @@ model SingleUTubeInternalHEX
         origin={80,6})));
 
 protected
-  final parameter Modelica.SIunits.SpecificHeatCapacity cpFil=matFil.c
+  final parameter Modelica.SIunits.SpecificHeatCapacity cpFil=fill.c
     "Specific heat capacity of the filling material";
-  final parameter Modelica.SIunits.ThermalConductivity kFil=matFil.k
+  final parameter Modelica.SIunits.ThermalConductivity kFil=fill.k
     "Thermal conductivity of the filling material";
-  final parameter Modelica.SIunits.Density dFil=matFil.d
+  final parameter Modelica.SIunits.Density dFil=fill.d
     "Density of the filling material";
 
   parameter Modelica.SIunits.HeatCapacity Co_fil=dFil*cpFil*adv.hSeg*Modelica.Constants.pi
-      *(bfGeo.rBor^2 - 2*(bfGeo.rTub + bfGeo.eTub)^2)
+      *(geo.rBor^2 - 2*(geo.rTub + geo.eTub)^2)
     "Heat capacity of the whole filling material";
 
   parameter Modelica.SIunits.SpecificHeatCapacity cpMed=
@@ -109,8 +109,8 @@ public
   Modelica.Blocks.Sources.RealExpression RVol1(y=
     convectionResistance(
     hSeg=adv.hSeg,
-    rBor=bfGeo.rBor,
-    rTub=bfGeo.rTub,
+    rBor=geo.rBor,
+    rTub=geo.rTub,
     kMed=kMed,
     mueMed=mueMed,
     cpMed=cpMed,
@@ -120,8 +120,8 @@ public
     annotation (Placement(transformation(extent={{-100,-2},{-80,18}})));
   Modelica.Blocks.Sources.RealExpression RVol2(y=
     convectionResistance(hSeg=adv.hSeg,
-    rBor=bfGeo.rBor,
-    rTub=bfGeo.rTub,
+    rBor=geo.rBor,
+    rTub=geo.rTub,
     kMed=kMed,
     mueMed=mueMed,
     cpMed=cpMed,
@@ -133,13 +133,13 @@ public
 initial equation
   (Rgb_val, Rgg_val, RCondGro_val, x) =
     singleUTubeResistances(hSeg=adv.hSeg,
-    rBor=bfGeo.rBor,
-    rTub=bfGeo.rTub,
-    eTub=bfGeo.eTub,
-    sha=bfGeo.xC,
-    kFil=matFil.k,
-    kSoi=matSoi.k,
-    kTub=bfGeo.kTub);
+    rBor=geo.rBor,
+    rTub=geo.rTub,
+    eTub=geo.eTub,
+    sha=geo.xC,
+    kFil=fill.k,
+    kSoi=soi.k,
+    kTub=geo.kTub);
 
 equation
   connect(vol1.heatPort, RConv1.fluid) annotation (Line(

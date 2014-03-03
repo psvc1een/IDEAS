@@ -1,8 +1,9 @@
 within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.BaseClasses.BoreHoles.BaseClasses;
 model CylindricalGroundLayer
   "Heat conduction in a cylinder using the radial descretization as adviced by Eskilson"
-  replaceable parameter Data.Records.SoilData material
-    "Material thermal properties" annotation (choicesAllMatching=true);
+
+  parameter Data.Records.Soil material "Thermal properties of the ground"
+    annotation (Placement(transformation(extent={{-46,-116},{-26,-96}})));
 
   parameter Modelica.SIunits.Height h "Height of the cylinder";
   parameter Modelica.SIunits.Radius r_a "Internal radius";

@@ -2,50 +2,51 @@ within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.BaseClasses.BoreHo
 model singleLayerCylinder_MLB
   "Comparison of the CylindricalGroundLayer with the Modelica Buildings Library"
   extends Modelica.Icons.Example;
+  import Buildings;
 
-  parameter Data.BorefieldStepResponse.Validation_Spitler_DaPWetter bfSteRes
+  parameter GroundHeatExchanger.Borefield.Data.BorefieldData.example_accurate bfData
     annotation (Placement(transformation(extent={{-60,76},{-40,96}})));
 
   Buildings.HeatTransfer.Conduction.SingleLayerCylinder soi_MBL(
     final material=Buildings.HeatTransfer.Data.BaseClasses.ThermalProperties(
-     k=bfSteRes.soi.k,c=bfSteRes.soi.c,d=bfSteRes.soi.d),
-    final h=bfSteRes.adv.hSeg,
-    final nSta=bfSteRes.adv.nHor,
-    final r_a=bfSteRes.bfGeo.rBor,
-    final r_b=bfSteRes.adv.rExt,
+     k=bfData.soi.k,c=bfData.soi.c,d=bfData.soi.d),
+    final h=bfData.adv.hSeg,
+    final nSta=bfData.adv.nHor,
+    final r_a=bfData.geo.rBor,
+    final r_b=bfData.adv.rExt,
     final steadyStateInitial=false,
-    final TInt_start=bfSteRes.adv.TFil0_start,
-    final TExt_start=bfSteRes.adv.TExt0_start) "Heat conduction in the soil"
+    final TInt_start=bfData.adv.TFil0_start,
+    final TExt_start=bfData.adv.TExt0_start) "Heat conduction in the soil"
         annotation (Placement(transformation(extent={{-10,-62},{10,-42}})));
 
-  Buildings.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow1
+  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow1
     annotation (Placement(transformation(extent={{-66,-62},{-46,-42}})));
-  Buildings.HeatTransfer.Sources.PrescribedTemperature prescribedTemperature1
+  Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature prescribedTemperature1
     annotation (Placement(transformation(extent={{44,-62},{64,-42}})));
-  Modelica.Blocks.Sources.Constant const3(k=bfSteRes.adv.TFil0_start)
+  Modelica.Blocks.Sources.Constant const3(k=bfData.adv.TFil0_start)
     annotation (Placement(transformation(extent={{0,-92},{20,-72}})));
 
   CylindricalGroundLayer soi(
-    final material=bfSteRes.soi,
-    final h=bfSteRes.adv.hSeg,
-    final nSta=bfSteRes.adv.nHor,
-    final r_a=bfSteRes.bfGeo.rBor,
-    final r_b=bfSteRes.adv.rExt,
+    final material=bfData.soi,
+    final h=bfData.adv.hSeg,
+    final nSta=bfData.adv.nHor,
+    final r_a=bfData.geo.rBor,
+    final r_b=bfData.adv.rExt,
     final steadyStateInitial=false,
-    final TInt_start=bfSteRes.adv.TFil0_start,
-    final TExt_start=bfSteRes.adv.TExt0_start) "Heat conduction in the soil"
+    final TInt_start=bfData.adv.TFil0_start,
+    final TExt_start=bfData.adv.TExt0_start) "Heat conduction in the soil"
                                   annotation (Placement(
         transformation(extent={{-12,16},{8,36}})));
-  Buildings.HeatTransfer.Sources.PrescribedTemperature prescribedTemperature2
+  Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature prescribedTemperature2
     annotation (Placement(transformation(extent={{42,16},{62,36}})));
-  Modelica.Blocks.Sources.Constant const1(k=bfSteRes.adv.TFil0_start)
+  Modelica.Blocks.Sources.Constant const1(k=bfData.adv.TFil0_start)
     annotation (Placement(transformation(extent={{-2,-14},{18,6}})));
   Modelica.Blocks.Sources.Step     const4(
     height=120,
     offset=0,
     startTime=1000)
     annotation (Placement(transformation(extent={{-94,18},{-74,38}})));
-  Buildings.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow2
+  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow2
     annotation (Placement(transformation(extent={{-64,18},{-44,38}})));
   Modelica.Blocks.Sources.Step     const2(
     height=120,

@@ -1,6 +1,6 @@
 within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.SoilData;
 record example
-  extends Records.SoilData(
+  extends Records.Soil(
     name="example",
     k=3.5,
     c=1210,

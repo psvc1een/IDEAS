@@ -3,10 +3,11 @@ model test_T_ft_cor
   extends Modelica.Icons.Example;
   import SI = Modelica.SIunits;
 
-  parameter Data.GenericStepParam.tS3600_tmind1_qSte30 genStePar;
-  parameter Data.BorefieldGeometricData.Line3_rB010_h100 bfGeo;
-  parameter Data.SoilData.Sandstone soi;
-  parameter Data.ResponseWetter.Sandstone_Line1_rB010_h100_H100qSte30 resWet;
+  parameter Data.StepResponse.example steRes;
+  parameter Data.GeometricData.example geo;
+  parameter Data.SoilData.example soi;
+  parameter Data.Records.ShortTermResponse shoTerRes=
+      Data.ShortTermResponse.example();
 
   SI.Temperature T_fts_cor;
 
@@ -20,15 +21,15 @@ model test_T_ft_cor
 
 algorithm
   t_old := t_new;
-  t_new := max(t_old, integer(integer(time/timeSca)*timeSca/genStePar.tStep));
+  t_new := max(t_old, integer(integer(time/timeSca)*timeSca/steRes.tStep));
 
 algorithm
   when initial() then
     i :=integer(2);
     i_old :=i;
-    timeSca :=integer(genStePar.tStep);
+    timeSca :=integer(steRes.tStep);
     timeSca_old :=timeSca;
-  elsewhen sample(genStePar.tStep*10^1,genStePar.tStep*10^i/5) then
+  elsewhen sample(steRes.tStep*10^1,steRes.tStep*10^i/5) then
     i_old :=i;
     i :=i_old+1;
     timeSca :=integer(timeSca_old*2);
@@ -37,11 +38,11 @@ algorithm
 
 equation
   T_fts_cor = HeatCarrierFluidStepTemperature(
-    t_d=max(t_old, integer(integer(time/timeSca)*timeSca/genStePar.tStep)),
-    genStePar=genStePar,
-    bfGeo=bfGeo,
+    t_d=max(t_old, integer(integer(time/timeSca)*timeSca/steRes.tStep)),
+    steRes=steRes,
+    geo=geo,
     soi=soi,
-    resWet=resWet);
+    shoTerRes=shoTerRes);
 
   annotation (experiment(StopTime=720000, __Dymola_NumberOfIntervals=10),
       __Dymola_experimentSetupOutput);

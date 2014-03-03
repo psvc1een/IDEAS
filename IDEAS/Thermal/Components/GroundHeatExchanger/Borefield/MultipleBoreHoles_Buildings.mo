@@ -16,11 +16,11 @@ model MultipleBoreHoles_Buildings
   // Calculation of the inlet and outlet temperature, if show_T=true
   parameter Boolean show_T=true;
   Modelica.SIunits.Temperature T_hcf_in=Medium.temperature_phX(
-      bfSteRes.adv.p_constant,
+      bfData.adv.p_constant,
       sou.h_in,
       X=Medium.X_default[1:Medium.nXi]) if                                                                                              show_T;
   Modelica.SIunits.Temperature T_hcf_out=Medium.temperature_phX(
-      bfSteRes.adv.p_constant,
+      bfData.adv.p_constant,
       sin.h_in,
       X=Medium.X_default[1:Medium.nXi]) if                                                                                               show_T;
 
@@ -58,16 +58,16 @@ public
       annotation (Placement(transformation(extent={{18,-30},{38,-10}})));
 equation
   sta_hcf = Medium.setState_pTX(
-    bfSteRes.adv.p_constant,
+    bfData.adv.p_constant,
     T_fts,
     X=Medium.X_default[1:Medium.nXi]);
 
   //if the heat flow is very low, the enthalpie is the same at the inlet and outlet
   if abs(Q_flow) > 10^(-3) then
-    sou.h_in = Medium.specificEnthalpy(sta_hcf) - Q_flow/(bfSteRes.genStePar.m_flow
-      *bfSteRes.bfGeo.nbBh/bfSteRes.bfGeo.nbSer)/2;
-    sinEntVal = Medium.specificEnthalpy(sta_hcf) + Q_flow/(bfSteRes.genStePar.m_flow
-      *bfSteRes.bfGeo.nbBh/bfSteRes.bfGeo.nbSer)/2;
+    sou.h_in = Medium.specificEnthalpy(sta_hcf) - Q_flow/(bfData.steRes.m_flow
+      *bfData.geo.nbBh/bfData.geo.nbSer)/2;
+    sinEntVal = Medium.specificEnthalpy(sta_hcf) + Q_flow/(bfData.steRes.m_flow
+      *bfData.geo.nbBh/bfData.geo.nbSer)/2;
   else
     sou.h_in = Medium.specificEnthalpy(sta_hcf);
     sinEntVal = Medium.specificEnthalpy(sta_hcf);

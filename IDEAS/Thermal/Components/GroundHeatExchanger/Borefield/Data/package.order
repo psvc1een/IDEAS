@@ -1,8 +1,8 @@
 Records
 SoilData
-BoreholeFillingData
-BorefieldGeometricData
-GenericStepParam
+FillingData
+GeometricData
+StepResponse
 Advanced
-ResponseWetter
-BorefieldStepResponse
+ShortTermResponse
+BorefieldData

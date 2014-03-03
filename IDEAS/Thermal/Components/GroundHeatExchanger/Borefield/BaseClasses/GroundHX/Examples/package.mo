@@ -2,4 +2,5 @@ within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.BaseClasses.Ground
 package Examples 
   extends Modelica.Icons.ExamplesPackage;
 
+
 end Examples;

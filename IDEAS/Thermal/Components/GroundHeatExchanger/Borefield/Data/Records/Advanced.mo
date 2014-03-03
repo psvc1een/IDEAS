@@ -1,5 +1,5 @@
 within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.Records;
-record Advanced
+record Advanced "Advanced parameters"
   extends Modelica.Icons.Record;
   import SI = Modelica.SIunits;
 
@@ -7,13 +7,9 @@ record Advanced
 
   parameter SI.Height hBor "Total height of the borehole";
 
-  /* System */
-  parameter SI.Temperature T_ambient=TExt0_start
-    "Ambient temperature for fluid.system";
-
   /*--------Discretization: */
   parameter Integer nVer=10
-    "Number of segments used for discretization in the vertical direction"
+    "Number of segments used for discretization in the vertical direction. Only important for the short-term simulation."
     annotation (Dialog(tab="Discretization"));
   parameter Integer nHor(min=1) = 10
     "Number of state variables in each horizontal layer of the soil"
@@ -57,12 +53,7 @@ record Advanced
     "Initial temperature of the filling material for h = 0...z0"
     annotation (Dialog(tab="Boundary conditions", group="T_start: filling"));
 
-  /*----------------T_ground_evolution*/
-  parameter SI.Time samplePeriod=3600*24*7
-    "Sample period for the external boundary condition"
-    annotation (Dialog(tab="Boundary conditions", group="T_evolution"));
-
-  /*--------Assumption: */
+  /*--------Assumptions: */
   parameter Boolean allowFlowReversal=true
     "= true to allow flow reversal, false restricts to design direction (port_a -> port_b)"
     annotation (Dialog(tab="Assumption"), Evaluate=true);

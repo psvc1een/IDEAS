@@ -15,29 +15,27 @@ function ShortTimeResponseHX
       "IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.BaseClasses.BoreHoles.Examples.SingleBoreHoleSerStepLoad"
     "model to simulate";
 
-  input Data.Records.SoilData matSoi=Data.SoilData.example()
+  input Data.Records.Soil soi=Data.SoilData.example()
     "Thermal properties of the ground";
-  input Data.Records.BoreholeFillingData matFil=
-      Data.BoreholeFillingData.example()
-    "Thermal properties of the filling material";
-  input Data.Records.BorefieldGeometryData bfGeo=
-      Data.BorefieldGeometricData.example()
-    "Geometric charachteristic of the borehole";
+  input Data.Records.Filling fill=
+      Data.FillingData.example() "Thermal properties of the filling material";
+  input Data.Records.Geometry geo=
+      Data.GeometricData.example() "Geometric charachteristic of the borehole";
   input Data.Records.Advanced adv=Data.Advanced.example() "Advanced parameters";
-  input Data.Records.GenericStepParam genStePar=
-      Data.GenericStepParam.example() "generic step load parameter";
+  input Data.Records.StepResponse steRes=
+      Data.StepResponse.example() "generic step load parameter";
 
   input String savePath=
-      "..\\IDEAS\\IDEAS\\Thermal\\Components\\GroundHeatExchanger\\Borefield\\Data\\ResponseWetter\\";
+      "..\\IDEAS\\IDEAS\\Thermal\\Components\\GroundHeatExchanger\\Borefield\\Data\\ShortTermResponse\\";
 
-  output Real[3,genStePar.tBre_d + 1] readData;
+  output Real[3,steRes.tBre_d + 1] readData;
 protected
   Integer nbOfPoi=1000;
   String filPathAndName=savePath + name "path and name of file";
   String[2] variablesToStore={"borHolSer.sta_a.T","borHolSer.sta_b.T"}
     "variables to store in result file";
-  SI.Time[1,genStePar.tBre_d + 1] timVec={0:genStePar.tStep:genStePar.tBre_d*
-      genStePar.tStep} "time vector for which the data are saved";
+  SI.Time[1,steRes.tBre_d + 1] timVec={0:steRes.tStep:steRes.tBre_d*
+      steRes.tStep} "time vector for which the data are saved";
   String[3] saveName;
 
 algorithm
@@ -50,18 +48,18 @@ algorithm
   Modelica.Utilities.Files.removeFile(filPathAndName + "Data");
 
   translateModel(modelToSimulate +
-    "(redeclare IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.SoilData." + matSoi.name + " matSoi" +
-    ",redeclare IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.BoreholeFillingData." + matFil.name +
-    " matFil" + ",redeclare IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.BorefieldGeometricData." +
-    bfGeo.name + " bfGeo" +
-    ",redeclare IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.GenericStepParam." + genStePar.name +
-    " genStePar" + ",redeclare IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.Advanced." + adv.name +
+    "(redeclare IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.SoilData." + soi.name + " soi" +
+    ",redeclare IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.FillingData." + fill.name +
+    " fill" + ",redeclare IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.GeometricData." +
+    geo.name + " geo" +
+    ",redeclare IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.StepResponse." + steRes.name +
+    " steRes" + ",redeclare IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data.Advanced." + adv.name +
     " adv)");
 
   // simulation for short time
   simulateModel(
       modelToSimulate,
-      stopTime=genStePar.tBre_d*genStePar.tStep,
+      stopTime=steRes.tBre_d*steRes.tStep,
       numberOfIntervals=nbOfPoi,
       method="dassl",
       resultFile=filPathAndName + "_sim"); //

@@ -2,4 +2,5 @@ within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.BaseClasses.BoreHo
 package Examples "Example models to test base classes"
 extends Modelica.Icons.ExamplesPackage;
 
+
 end Examples;

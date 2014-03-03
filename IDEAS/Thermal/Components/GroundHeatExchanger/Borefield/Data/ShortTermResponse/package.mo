@@ -1,5 +1,6 @@
 within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data;
-package GenericStepParam 
+package ShortTermResponse 
 extends Modelica.Icons.Package;
 
-end GenericStepParam;
+
+end ShortTermResponse;

@@ -6,7 +6,7 @@ function test_TransientFrac "ATTENTION: don't translate this function! otherwise
   Borefield.Data.GenericStepParam.tS3600_tmind1_qSte30(),
   Borefield.Data.BorefieldGeometricData.Line1_rB010_h100(),
   Borefield.Data.SoilData.Sandstone(),
-  Borefield.Data.ResponseWetter.SandstoneH100qSte30()
+  Borefield.Data.ShortTermResponse.SandstoneH100qSte30()
   ---------------------------------------------------------------------
   "
   input Integer n_max=201;
@@ -23,7 +23,7 @@ function test_TransientFrac "ATTENTION: don't translate this function! otherwise
 
 algorithm
   (,v_max) := BaseClasses.nbOfLevelAgg(n_max, p_max);
-  (rArr,nbLumpedCells) := BaseClasses.cellWidth(q_max, p_max);
+  rArr := BaseClasses.cellWidth(q_max, p_max);
 
   nuMat := BaseClasses.nbPulseAtEndEachLevel(
     q_max,
@@ -33,10 +33,10 @@ algorithm
   kappaMat := transientFrac(
     q_max,
     p_max,
-    Data.GenericStepParam.tS3600_tmind1_qSte30(),
-    Data.BorefieldGeometricData.Line1_rB010_h100(),
-    Data.SoilData.Sandstone(),
-    Data.BorefieldStepResponse.SandstoneLine1H100qSte30tSte3600(),
+    Data.StepResponse.example(),
+    Data.GeometricData.example(),
+    Data.SoilData.example(),
+    Data.ShortTermResponse.example(),
     nuMat=nuMat,
     TSteSta=TSteSta);
 

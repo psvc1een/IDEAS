@@ -1,5 +1,6 @@
 within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data;
-package BorefieldStepResponse 
+package StepResponse 
 extends Modelica.Icons.Package;
 
-end BorefieldStepResponse;
+
+end StepResponse;

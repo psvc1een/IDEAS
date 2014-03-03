@@ -7,8 +7,8 @@ partial model partial_MultipleBoreHoles
   //  2) make it possible to run model with full pre-compilation of g-fuction (short and long term)
 
 // General parameters of borefield
-  replaceable parameter Data.Records.BorefieldStepResponse bfSteRes
-    constrainedby Data.Records.BorefieldStepResponse
+  replaceable parameter Data.Records.BorefieldData bfData
+    constrainedby Data.Records.BorefieldData
     annotation (Placement(transformation(extent={{-134,-134},{-114,-114}})));
 
 //General parameters of aggregation
@@ -20,19 +20,19 @@ partial model partial_MultipleBoreHoles
 
   final parameter Integer q_max=
       Aggregation.BaseClasses.nbOfLevelAgg(
-      n_max=integer(lenSim/bfSteRes.genStePar.tStep), p_max=p_max)
+      n_max=integer(lenSim/bfData.steRes.tStep), p_max=p_max)
     "number of aggregation levels";
 
   final parameter Modelica.SIunits.Temperature TSteSta=
       GroundHX.HeatCarrierFluidStepTemperature(
-            genStePar=bfSteRes.genStePar,
-            bfGeo=bfSteRes.bfGeo,
-            soi=bfSteRes.soi,
-            resWet=bfSteRes.resWet,
-            t_d=bfSteRes.genStePar.tSteSta_d);
+            steRes=bfData.steRes,
+            geo=bfData.geo,
+            soi=bfData.soi,
+            shoTerRes=bfData.shoTerRes,
+            t_d=bfData.steRes.tSteSta_d);
 
-  final parameter Real R_ss=TSteSta/(bfSteRes.genStePar.q_ste*bfSteRes.bfGeo.hBor
-      *bfSteRes.bfGeo.nbBh);
+  final parameter Real R_ss=TSteSta/(bfData.steRes.q_ste*bfData.geo.hBor
+      *bfData.geo.nbBh);
 
 // Load of borefield
   Modelica.SIunits.HeatFlowRate QAve_flow
@@ -66,10 +66,10 @@ protected
       Aggregation.transientFrac(
             q_max=q_max,
             p_max=p_max,
-            genStePar=bfSteRes.genStePar,
-            bfGeo=bfSteRes.bfGeo,
-            soi=bfSteRes.soi,
-            resWet=bfSteRes.resWet,
+            steRes=bfData.steRes,
+            geo=bfData.geo,
+            soi=bfData.soi,
+            shoTerRes=bfData.shoTerRes,
             nuMat=nuMat,
             TSteSta=TSteSta)
     "transient thermal resistance of each aggregation cells";
@@ -106,8 +106,8 @@ algorithm
     iSam := 1;
   end when;
 
-  when initial() or sample(startTime, bfSteRes.genStePar.tStep) then
-    QAve_flow := (U - UOld)/bfSteRes.genStePar.tStep;
+  when initial() or sample(startTime, bfData.steRes.tStep) then
+    QAve_flow := (U - UOld)/bfData.steRes.tStep;
     UOld := U;
 
     // Update of aggregated load matrix. Careful: need of inversing order of loaVec (so that [end] = most recent load). FIXME: see if you can change that.
@@ -124,7 +124,7 @@ algorithm
       p_max=p_max,
       QMat=QMat,
       kappaMat=kappaMat,
-      R_ss=R_ss) + bfSteRes.genStePar.T_ini;
+      R_ss=R_ss) + bfData.steRes.T_ini;
 
     iSam := iSam + 1; // FIXME: when I remove this, I get a T_fts = 0 for the whole simulation! ??
   end when;

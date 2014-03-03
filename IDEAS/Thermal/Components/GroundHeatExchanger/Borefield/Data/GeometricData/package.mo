@@ -1,5 +1,5 @@
 within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.Data;
-package BorefieldGeometricData 
+package GeometricData 
 extends Modelica.Icons.Package;
 
-end BorefieldGeometricData;
+end GeometricData;

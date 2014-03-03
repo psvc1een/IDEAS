@@ -31,10 +31,10 @@ model MultipleBoreHoles_IDEAS_opt
 equation
   //if the heat flow is very low, the enthalpie is the same at the inlet and outlet
   if abs(Q_flow) > 10^(-3) then
-    T_hcf_in = T_fts - Q_flow/(bfSteRes.genStePar.m_flow
-      *bfSteRes.bfGeo.nbBh/bfSteRes.bfGeo.nbSer)/medium.cp/2;
-    T_hcf_out = T_fts + Q_flow/(bfSteRes.genStePar.m_flow
-      *bfSteRes.bfGeo.nbBh/bfSteRes.bfGeo.nbSer)/medium.cp/2;
+    T_hcf_in = T_fts - Q_flow/(bfData.steRes.m_flow
+      *bfData.geo.nbBh/bfData.geo.nbSer)/medium.cp/2;
+    T_hcf_out = T_fts + Q_flow/(bfData.steRes.m_flow
+      *bfData.geo.nbBh/bfData.geo.nbSer)/medium.cp/2;
   else
     T_hcf_in = T_fts;
     T_hcf_out = T_fts;

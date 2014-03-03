@@ -2,4 +2,7 @@ within IDEAS.Thermal.Components.GroundHeatExchanger.Borefield.BaseClasses.Aggreg
 package BaseClasses 
   extends Modelica.Icons.Package;
 
+
+
+
 end BaseClasses;

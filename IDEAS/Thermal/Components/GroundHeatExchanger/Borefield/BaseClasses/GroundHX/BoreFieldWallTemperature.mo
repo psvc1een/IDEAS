@@ -13,33 +13,33 @@ protected
   Real res "integral value";
   SI.TemperatureDifference deltaT;
 algorithm
-  assert(t_d >= genStePar.t_min_d, "The choosen simulation time is " + String(
-    t_d*genStePar.tStep) + "s but the minimum resolution time is " + String(
-    genStePar.t_min_d*genStePar.tStep) + "s.");
-  lb := 1/sqrt(4*soi.alp*t_d*genStePar.tStep);
-  ub := 1/sqrt(4*soi.alp*genStePar.t_min_d*genStePar.tStep);
+  assert(t_d >= steRes.t_min_d, "The choosen simulation time is " + String(
+    t_d*steRes.tStep) + "s but the minimum resolution time is " + String(
+    steRes.t_min_d*steRes.tStep) + "s.");
+  lb := 1/sqrt(4*soi.alp*t_d*steRes.tStep);
+  ub := 1/sqrt(4*soi.alp*steRes.t_min_d*steRes.tStep);
 
 // Code commented: make it possible to extend model: for single borehole it would be possible to calculate T at any r.
-//   if bfGeo.nbBh == 1 then
+//   if geo.nbBh == 1 then
 //     res := Modelica.Math.Nonlinear.quadratureLobatto(
-//       function Borefield.GroundHX.BaseClasses.integrandBh_rt(r=r, D=bfGeo.hBor),
+//       function Borefield.GroundHX.BaseClasses.integrandBh_rt(r=r, D=geo.hBor),
 //       lb,
 //       ub);
 //   else
-  assert(r == bfGeo.rBor,
+  assert(r == geo.rBor,
     "The simulation of borefield are only possible for r = rBor. Please ensure both parameters have the same value");
   res := Modelica.Math.Nonlinear.quadratureLobatto(
     function BaseClasses.integrandBf_bt(
-      D=bfGeo.hBor,
-      rBor=bfGeo.rBor,
-      nbBh=bfGeo.nbBh,
-      cooBh=bfGeo.cooBh),
+      D=geo.hBor,
+      rBor=geo.rBor,
+      nbBh=geo.nbBh,
+      cooBh=geo.cooBh),
     lb,
     ub);
 //   end if;
 
-  deltaT := genStePar.q_ste/(4*Modelica.Constants.pi*soi.k)*res;
-  T := genStePar.T_ini + deltaT;
+  deltaT := steRes.q_ste/(4*Modelica.Constants.pi*soi.k)*res;
+  T := steRes.T_ini + deltaT;
 
   annotation (Documentation(info="<html>
 <p>
