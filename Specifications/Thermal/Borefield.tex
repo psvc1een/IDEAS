@@ -1,7 +1,6 @@
 % Documentklasse
 \documentclass[a4paper,oneside,11pt]{report}
 
-
 % Packages laden
 \usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=2cm]{geometry}		% paginagrootte
 %\usepackage{a4wide}
@@ -58,14 +57,58 @@ The model also uses the Modelica Building Library (\url{http://simulationresearc
 \section{Structure of the code}
 The code is divided in several packages:
 \begin{enumerate}
-\item Data: all the parameter values of the borefield are stored here. This package also includes parameters for the calculation of the step response (short and long-term) and for the aggregation technic.
+\item Data: all the parameter values of the borefield are stored here. This package also includes parameters for the calculation of the step response (short and long-term) and for the aggregation technic. The records {\tt SoilData, FillingData, GeometricData, StepResponse, Advanced} contain the general parameter values. The record {\tt ShortTermResponse} reads a mat-file which should contain the fluid temperature response for the general parameters given by the other records. Finally, the record {\tt BorefieldData} groups the six records into one. 
 \item BaseClasses: most of the calculations for the borefield are done by its base classes. It includes the model for the short-term response, model for the long-term response, functions for the aggregation technic and some scripts to automate the calculation of the short-term response of given parameters and the saving of the results in a .mat file (see section \ref{sec:ini_mod}.
 \item Examples: some examples to show how you can run the model
 \item Extra: model for optimization (\textit{MultipleBoreholes\_signals} caluclate the in and outlet temperature and give as as an Real output signal, \textit{GroundCoupledHeatPump} combines \textit{MultipleBoreholes\_signals} with some code to calculate COP and QCond, given QEva). These models are used in \textit{Borefield/Example/borefieldWithHP}.
 \end{enumerate}
 
+\section{Run the example models}
+As explained in the previous section, the record {\tt ShortTermResponse} read the short-term step-response of the borefield. The response should first be build so that you can run the examples. (There are two examples: \textit{example} and \textit{example\_accurate}). This is done using a script. You might need to change some path so that the response is saved at the right place. Do the following:
+
+\begin{enumerate}
+\item Run the script {\tt borefield/BaseClasses/Script/ShortTimeResponseHX } in order to create the step-response:
+	\begin{enumerate}
+	\item right click on the function name (ShortTimeResponseHX)
+	\item to build the response of \textit{example}, just click on \textit{ok} without changing the inputs.
+	\item Check from simulation tab that you get 3 times \textit{True}. If it is not the case, go to Debug (see below)
+	\end{enumerate}
+\item Debug: change \textit{savePath} to give the full path on your computer in \textit{ShortTermResponseHX} code and try again. Mind that you should use double slash.
+\item Check now if {\tt borefield/Data/ShortTermResponse/example } gives no errors when you do the model check.
+\item if you get an error, change the path in {\tt borefield/Data/ShortTermResponse/example } to give your full computer path.
+\item it should work now
+\end{enumerate}
+
+
+You can now build the short term response of the example \textit{example\_accurate}. Do the following:
+\begin{enumerate}
+\item Run the script {\tt borefield/BaseClasses/Script/ShortTimeResponseHX } in order to create the step-response:
+	\begin{enumerate}
+	\item right click on the function name (ShortTimeResponseHX)
+	\item fill inputs:
+		\begin{enumerate}
+		\item name: "example\_accurate" .
+		\item Tree Data: change only the record ShortTermReponse (click on \textit{arrow > select record > example\_accurate}).
+		\item Check from simulation tab that you get 3 times \textit{True}. 
+		\end{enumerate}
+	\end{enumerate}
+\item Check now if {\tt borefield/Data/ShortTermResponse/example\_accurate } gives no errors when you do the model check.
+\item if you get an error, change the path in {\tt borefield/Data/ShortTermResponse/example } to give your full computer path.
+\item it should work now.
+\end{enumerate}
+
+You have now all the mat-files you need to run all examples. The last thing you need to do is to build the c-code for the error-function which is used by the some models. To do so, do the following:
+\begin{enumerate}
+\item if it does not yet exist, create a folder \textit{SimulationResults}. You should always be in this directory when you do a simlation.
+\item copy the file \textit{erf.c} (located in {\tt IDEAS/IDEAS/Resources/CCode}) to this folder.
+\item execute the function {\tt Borefield/GroundHX/BaseClasses/erf} with input \textit{u=1}. This will build the c-code to modelica-code.
+\end{enumerate}
+
+You should now be able to run all the examples of the library. Try for example the model {\tt Borefield/Example/borefieldWithHP}.
+
 \section{Initialization of a new borefield model} \label{sec:ini_mod}
-The borefield model is based on a temperature response model. Prior any simulation, the model will build a step-response and create the aggregation cells. This is only semi-automatic. The user should build himself the short-term temperature response as following:
+The borefield model is based on a temperature response model. Prior any simulation, the model will build a step-response and create the aggregation cells. This is only semi-automatic. Every time the user want to use a different borefield (different parameter value), he should build a new records structure as following:
+
 \begin{enumerate}
 \item Go on {\tt borefield/Data } and create new record for {\tt SoilData, FillingData, FillingData, GeometricData, StepResponse, Advanced}. Notice that most of the parameters have default values.
 \item Run the script {\tt borefield/BaseClasses/Script/ShortTimeResponseHX } in order to create a new record \textit{ShortTermResponse}:
@@ -75,15 +118,15 @@ The borefield model is based on a temperature response model. Prior any simulati
 		\begin{enumerate}
 		\item name: give the name of your new record
 		\item Tree Data: select the \textit{soi, fill, geo, adv} and \textit{steRes} that you have created (click on \textit{arrow > select record > recordName})
-		\item Check from simulation tab that you get 3 times \textit{True}. If it is not the case, go to Debug (see below)
+		\item Check from simulation tab that you get 3 times \textit{True}. 
 		\item If no error, go \textit{Data/ShortTermResponse} and duplicate \textit{example} (right click > new > duplicate) and give the model a new name
 		\item change the string \textit{exampleData} to the new name and click on check the model
 		\item if it gives an error, give the full path of your computer
 		\end{enumerate}
-	\item Debug: change \textit{savePath} to give the full path on your computer in \textit{ShortTermResponseHX} code
 	\end{enumerate}
 \item Finally, make a new record \textit{Data/BorefieldData} calling all the new subrecord you have made
 \end{enumerate}
+
 
 \section{Simulation}
 Simulating the model is now very easy. Go for example on {\tt Borefield/Examples/borefieldWithHP}. Change the parameter {\tt lenSim} to the desired simulation time (necessary to know for the aggregation technique). Change also the type of the borefieldData to the newly creating record (in the model {\tt borefieldWithHP} change 
