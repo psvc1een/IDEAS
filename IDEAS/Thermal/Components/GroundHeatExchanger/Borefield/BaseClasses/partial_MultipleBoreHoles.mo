@@ -5,6 +5,7 @@ partial model partial_MultipleBoreHoles
   // FIXME:
   //  1) make it possible to run model without pre-compilation of g-function (short term)
   //  2) make it possible to run model with full pre-compilation of g-fuction (short and long term)
+  //  3) reset the value of U in if-statement
 
 // General parameters of borefield
   replaceable parameter Data.Records.BorefieldData bfData
