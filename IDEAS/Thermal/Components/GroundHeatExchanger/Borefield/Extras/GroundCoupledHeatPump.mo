@@ -9,8 +9,9 @@ model GroundCoupledHeatPump "Heat pump connected to ta borefield"
 
   Extras.MultipleBoreHoles_signals multipleBoreHoles_IDEAS_opt(bfData=bfData,
       lenSim=lenSim)
-    annotation (Placement(transformation(extent={{4,-66},{64,-6}})));
-  Modelica.Blocks.Interfaces.RealInput QEva(unit="W") "load to the borefield"
+    annotation (Placement(transformation(extent={{-24,-60},{36,0}})));
+  Modelica.Blocks.Interfaces.RealInput Q_flow_bui(unit="W")
+    "Heat flow to the building (positive if building is heated, negative if building is cooled down)"
     annotation (Placement(transformation(
         extent={{-20,-20},{20,20}},
         rotation=-90,
@@ -19,49 +20,82 @@ model GroundCoupledHeatPump "Heat pump connected to ta borefield"
         transformation(
         extent={{-14,-14},{14,14}},
         rotation=-90,
-        origin={-60,-110})));
+        origin={-80,-104}), iconTransformation(
+        extent={{-14,-14},{14,14}},
+        rotation=-90,
+        origin={-86,-104})));
   Modelica.Blocks.Interfaces.RealOutput T_bf_in(unit="K", displayUnit="degC") annotation (Placement(
         transformation(
         extent={{-14,-14},{14,14}},
         rotation=-90,
-        origin={0,-110})));
+        origin={-28,-104}), iconTransformation(
+        extent={{-14,-14},{14,14}},
+        rotation=-90,
+        origin={-30,-104})));
   Modelica.Blocks.Interfaces.RealOutput T_bf_out(unit="K", displayUnit="degC") annotation (Placement(
         transformation(
         extent={{-14,-14},{14,14}},
         rotation=-90,
-        origin={60,-110})));
-  Modelica.Blocks.Interfaces.RealInput T_eva(unit="K", displayUnit="degC")
-    "Temperature of evaporator"
-    annotation (Placement(transformation(
+        origin={32,-104})));
+  Modelica.Blocks.Interfaces.RealInput T_sup_bui(unit="K", displayUnit="degC")
+    "Supply temperature to the building" annotation (Placement(transformation(
         extent={{-20,-20},{20,20}},
         rotation=-90,
         origin={60,106})));
-  Modelica.Blocks.Sources.RealExpression QCon(y=QCond)
-    "Condensor load to the borefield"
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Sources.RealExpression Q_flow_bf(y=Q_flow_bf_val)
+    "Heat flow injected (if positive) or extracted (if negative) from the borefield"
+    annotation (Placement(transformation(extent={{-38,-4},{-18,16}})));
 
-  Modelica.SIunits.HeatFlowRate QCond "Condensor power";
-  Modelica.SIunits.Power PEl "Electrical power";
+  Modelica.SIunits.HeatFlowRate Q_flow_bf_val
+    "Heat flow injected (if positive) or extracted (if negative) from the borefield";
 
+  Modelica.Blocks.Interfaces.RealOutput EER(unit="") annotation (Placement(
+        transformation(
+        extent={{-14,-14},{14,14}},
+        rotation=-90,
+        origin={-58,-104})));
+  Modelica.Blocks.Interfaces.RealOutput PEl(unit="W")
+    "Electrical power of the heat pump"                                                    annotation (Placement(
+        transformation(
+        extent={{-14,-14},{14,14}},
+        rotation=-90,
+        origin={80,-104})));
 equation
-  COP = 3;
-  PEl = QEva * COP;
-  QCond = QEva + PEl;
+  // Electrical power
+  COP = 5;
+  EER = 10;
+  if Q_flow_bui > Modelica.Constants.eps then
+    // Heating mode
+    PEl = Q_flow_bui / COP;
+  elseif Q_flow_bui < - Modelica.Constants.eps then
+    // Cooling mode
+    PEl = -Q_flow_bui / EER;
+  else
+    // Off
+    PEl = 0;
+  end if;
+
+  // Extracted/Injected heat to the borefield
+  Q_flow_bf_val = Q_flow_bui - PEl;
 
   connect(T_bf_in, T_bf_in) annotation (Line(
-      points={{1.77636e-015,-110},{1.77636e-015,-110}},
+      points={{-28,-104},{-28,-104}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(multipleBoreHoles_IDEAS_opt.T_sou, T_bf_out) annotation (Line(
-      points={{55,-36},{60,-36},{60,-110}},
+      points={{27,-30},{32,-30},{32,-104}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(multipleBoreHoles_IDEAS_opt.T_sin, T_bf_in) annotation (Line(
-      points={{13,-36},{0,-36},{0,-110}},
+      points={{-15,-30},{-28,-30},{-28,-104}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(QCon.y, multipleBoreHoles_IDEAS_opt.Q_flow) annotation (Line(
-      points={{11,0},{34,0},{34,-17.5714}},
+  connect(Q_flow_bf.y, multipleBoreHoles_IDEAS_opt.Q_flow) annotation (Line(
+      points={{-17,6},{6,6},{6,-11.5714}},
+      color={0,0,127},
+      smooth=Smooth.None));
+  connect(EER, EER) annotation (Line(
+      points={{-58,-104},{-58,-104}},
       color={0,0,127},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
